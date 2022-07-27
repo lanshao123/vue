@@ -11,13 +11,17 @@ Vue.use(VueRouter);
 import studentList from "./components/sutdent/studentList";
 import teacherList from "./components/teacher/teacherList";
 import teacherAdd from "./components/teacher/teacherAdd";
+import userAddSave from "./components/useradd/userAddSave";
+import userAddList from "./components/useradd/userAddList";
 
 var router = new VueRouter({
   routes: [
     { path: '/studentList', component: studentList },
     { path: '/teacherList', component: teacherList },
     { path: '/teacherAdd', component: teacherAdd },
-    { path: '/teacherEdit/:id', component: teacherAdd }
+    { path: '/teacherEdit/:id', component: teacherAdd },
+    { path: '/userAddSave', component: userAddSave },
+    { path: '/userAddList', component: userAddList }
   ]
 })
 new Vue({

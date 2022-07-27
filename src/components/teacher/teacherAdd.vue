@@ -51,13 +51,13 @@ export default {
     onSubmit() {
       var addTeacher=null;
       if(this.id === undefined){
-        addTeacher=axios.post(`http://127.0.0.1:8081/teachers/addTeacher`, this.form);
+        addTeacher=axios.post(`http://127.0.0.1:9092/teachersFeign/addTeacher`, this.form);
       }else{
-        addTeacher=axios.put(`http://127.0.0.1:8081/teachers/updateTeacher/${this.id}`, this.form);
+        addTeacher=axios.put(`http://127.0.0.1:9092/teachersFeign/editTeacher/${this.id}`, this.form);
       }
      //进行提交表单添加
       addTeacher.then(res => {
-        if (res.data.code == 0) {
+        if (res.data == 1) {
           this.$message.success("成功");
           this.$router.push({path:'/teacherList'});
         } else {
@@ -67,7 +67,7 @@ export default {
     },
     //加号
     addList() {
-      this.form.students.push({name: '', age: ''})
+      this.form.students.unshift({name: '', age: ''})
     },
     //减号
     subList(index) {
@@ -79,7 +79,7 @@ export default {
     },
     //回显
     findByIdteacher(id){
-      axios.get(`http://127.0.0.1:8081/teachers/findByIdteacher/${id}`).then(res => {
+      axios.get(`http://127.0.0.1:9092/teachersFeign/findTeacherById/${id}`).then(res => {
         this.form=res.data;
       })
     }
@@ -88,6 +88,7 @@ export default {
     this.id=this.$route.params.id;
     if(this.id)
     this.findByIdteacher(this.id);
+
   }
 }
 </script>

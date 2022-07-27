@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-form :inline="true" :model="searchMap" class="demo-form-inline">
+    <el-form :inline="true" >
       <el-form-item label="姓名">
         <el-input v-model="searchMap.name" placeholder="姓名"></el-input>
       </el-form-item>
@@ -49,6 +49,10 @@
         <template slot-scope="scope">
           <el-button
               size="mini"
+              @click="handleStudentList(scope.row)">查看学生
+          </el-button>
+          <el-button
+              size="mini"
               @click="handleEdit(scope.row.id)">编辑
           </el-button>
           <el-button
@@ -68,6 +72,33 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
     </el-pagination>
+    <el-dialog
+        title="学生信息"
+        :visible.sync="dialogVisible"
+        width="30%"
+       >
+
+          <table class="datatable">
+            <thead>
+            <tr>
+              <th>编号</th>
+              <th>姓名</th>
+              <th>年龄</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item,i) in StudentList" :key="i">
+              <td><label >{{item.id}}</label></td>
+              <td><label >{{item.name}}</label></td>
+              <td><label >{{item.age}}</label></td>
+            </tr>
+            </tbody>
+          </table>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,6 +110,8 @@ export default {
   name: "teacherList",
   data() {
     return {
+      StudentList:[],
+      dialogVisible: false,
       tableData: [],
       currentPage4: 1,
       total: 0,
@@ -102,8 +135,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.delete(`http://127.0.0.1:8081/teachers/deleteTeacherById/${id}`).then(res => {
-          if (res.data.code == 0) {
+        axios.delete(`http://127.0.0.1:9092/teachersFeign/deleteTeacher/${id}`).then(res => {
+          if (res.data == 1) {
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -133,10 +166,16 @@ export default {
       this.toTeacherList();
     },
     toTeacherList() {
-      axios.post(`http://127.0.0.1:8081/teachers/findTeacherList/${this.currentPage4}/${this.sizes}`, this.searchMap).then(res => {
+      axios.post(`http://127.0.0.1:9092/teachersFeign/findTeacherList/${this.currentPage4}/${this.sizes}`, this.searchMap).then(res => {
         this.total = res.data.total;
         this.tableData = res.data.rows;
       })
+    },
+    handleStudentList(row){
+      //这个方法用来展示学生信息
+
+      this.StudentList=row.students;
+      this.dialogVisible=true;
     }
 
   }, mounted() {

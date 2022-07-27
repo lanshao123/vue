@@ -23,6 +23,14 @@
               <i class="el-icon-document"></i>
               <span slot="title" @click="goTeacherList">老师列表</span>
             </el-menu-item>
+            <el-menu-item index="2">
+              <i class="el-icon-document"></i>
+              <span slot="title" @click="goUserAddSave">添加地址</span>
+            </el-menu-item>
+            <el-menu-item index="2">
+              <i class="el-icon-document"></i>
+              <span slot="title" @click="goUserAddList">收货信息</span>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
@@ -50,6 +58,12 @@ export default {
     },
     goTeacherList(){
       this.$router.push({path:'/teacherList'});
+    },
+    goUserAddSave(){
+      this.$router.push({path:'/userAddSave'});
+    },
+    goUserAddList(){
+      this.$router.push({path:'/userAddList'});
     }
   }
 }
